@@ -28,6 +28,7 @@ const headerToKeyMap = {
   Name: "name",
   College: "college",
   "Reason To Select": "reasonToSelect",
+  "12th Percentage": "12thPercentage",
   Gender: "gender",
   "Mobile Number": "mobileNumber",
   "Whatsapp Number": "whatsappNumber",
@@ -101,6 +102,7 @@ async function appendApplicationData(data) {
     name: flattenValue(data.name),
     college: flattenValue(data.college),
     reasonToSelect: flattenValue(data.reasonToSelect),
+    "12thPercentage": flattenValue(data["12thPercentage"]),
     gender: flattenValue(data.gender),
     mobileNumber: flattenValue(data.mobileNumber),
     whatsappNumber: flattenValue(data.whatsappNumber),
@@ -122,7 +124,7 @@ async function appendApplicationData(data) {
     reference: flattenValue(data.reference),
     internshipType: flattenValue(data.internshipType),
     profilePicture: data.profilePicture || "",
-    // paymentVerification: razorpay_payment_id, // empty for now
+    paymentVerification: razorpay_payment_id, // empty for now
     createdAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
   };
 
