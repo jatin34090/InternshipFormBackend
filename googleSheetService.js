@@ -110,6 +110,7 @@ const headerToKeyMap = {
   Gender: "gender",
   "Mobile Number": "mobileNumber",
   "Whatsapp Number": "whatsappNumber",
+  "Parent Contact Number": "parentContactNumber",
   Age: "age",
   City: "city",
   Email: "email",
@@ -171,11 +172,7 @@ async function appendApplicationData(data) {
 
   console.log("headers of sheet", headers);
   console.log("datfor create new user", data);
-  console.log("paymentVerification", data.paymentVerification);
-  console.log(
-    "paymentVerification",
-    razorpay_payment_id
-  );
+
   
 
   // 2. Create a mapping from header to value
@@ -186,6 +183,7 @@ async function appendApplicationData(data) {
     gender: flattenValue(data.gender),
     mobileNumber: flattenValue(data.mobileNumber),
     whatsappNumber: flattenValue(data.whatsappNumber),
+    parentContactNumber: flattenValue(data.parentContactNumber),
     age: flattenValue(data.age),
     city: flattenValue(data.city),
     email: flattenValue(data.email),
@@ -203,7 +201,7 @@ async function appendApplicationData(data) {
     reference: flattenValue(data.reference),
     internshipType: flattenValue(data.internshipType),
     profilePicture: data.profilePicture || "",
-    paymentVerification: razorpay_payment_id, // empty for now
+    // paymentVerification: razorpay_payment_id, // empty for now
     createdAt: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
   };
 
@@ -232,7 +230,7 @@ async function getColleges() {
 
   const response = await sheet.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
-    range: "Colleges!A2:A",
+    range: "Colleges!A2:C",
   });
 
   return response.data.values.map(([name, priceDual, priceSingle]) => ({

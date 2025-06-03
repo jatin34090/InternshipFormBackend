@@ -8,7 +8,7 @@ require("dotenv").config();
 const app = express();
 const port = 5000;
 app.use(cors({
-  origin: 'https://internshipformfrontend.onrender.com',
+  origin: ['https://internshipformfrontend.onrender.com', 'http://localhost:5173', 'https://internshipform.mindclubfoundation.in'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
