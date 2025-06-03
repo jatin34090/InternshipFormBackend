@@ -4,11 +4,17 @@ const crypto = require("crypto");
 const { get } = require("mongoose");
 const path = require("path");
 const sheets = google.sheets("v4");
+const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+
 
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.join(__dirname, "credentials.json"), // Downloaded JSON file from Google Cloud
+  credentials, // Downloaded JSON file from Google Cloud
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
+// const auth = new google.auth.GoogleAuth({
+//   keyFile: path.join(__dirname, "credentials.json"), // Downloaded JSON file from Google Cloud
+//   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+// });
 
 const SPREADSHEET_ID = "1rVsVtOHIjF-qpogmw7R0B30ev_Ziy46Og0o93m1SmVs"; // Replace with your actual Google Sheet ID
 
@@ -16,92 +22,7 @@ async function getAuthClient() {
   return await auth.getClient();
 }
 
-// async function appendApplicationData(data) {
-//   const client = await getAuthClient();
-//   const sheet = google.sheets({ version: 'v4', auth: client });
 
-//   await sheet.spreadsheets.values.append({
-//     spreadsheetId: SPREADSHEET_ID,
-//     range: 'Applications!A1',
-//     valueInputOption: 'USER_ENTERED',
-//     resource: {
-//       values: [
-//         [
-//           data.name,
-//           data.college,
-//           data.reasonToSelect,
-//           data.gender,
-//           data.mobile,
-//           data.whatsapp,
-//           data.age,
-//           data.city,
-//           data.email,
-//           data.course,
-//           data.interestAreas,
-//           data.hasLaptop,
-//           data.workFromHomeCity,
-//           data.experience,
-//           data.jobInterest,
-//           data.purpose,
-//           data.reference,
-//           data.internshipType,
-//           data.paymentVerification,
-//           new Date().toLocaleString(),
-//         ],
-//       ],
-//     },
-//   });
-// }
-
-// const flattenValue = (val) => {
-//   if (val && typeof val === 'object') {
-//     return val.value || JSON.stringify(val);
-//   }
-//   return val || '';
-// };
-
-// async function appendApplicationData(data) {
-//   const client = await getAuthClient();
-//   const sheet = google.sheets({ version: "v4", auth: client });
-
-//   console.log("data form backed", data);
-
-//   const formattedValues = [
-
-//   flattenValue(data.name),
-//   flattenValue(data.college),
-//   flattenValue(data.reasonToSelect),
-//   flattenValue(data.gender),
-//   flattenValue(data.mobileNumber),
-//   flattenValue(data.whatsappNumber),
-//   flattenValue(data.age),
-//   flattenValue(data.city),
-//   flattenValue(data.email),
-//   flattenValue(data.course),
-//   flattenValue(Array.isArray(data.interestAreas) ? data.interestAreas.join(', ') : data.interestAreas),
-//   flattenValue(data.hasLaptop ),
-//   flattenValue(data.workFromHomeCity),
-//   flattenValue(data.experience),
-//   flattenValue(data.jobInterest),
-//   flattenValue(data.purpose),
-//   flattenValue(data.reference),
-//   flattenValue(data.internshipType),
-//   data.profilePicture,
-//   // empty cell for payment ID or other future data
-//   new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-// ];
-
-//   await sheet.spreadsheets.values.append({
-//     spreadsheetId: SPREADSHEET_ID,
-//     range: "Applications!A1",
-//     valueInputOption: "USER_ENTERED",
-//     resource: {
-//       values: [
-//        formattedValues
-//       ],
-//     },
-//   });
-// }
 
 const headerToKeyMap = {
   Name: "name",
@@ -225,19 +146,24 @@ async function appendApplicationData(data) {
 }
 
 async function getColleges() {
-  const client = await getAuthClient();
-  const sheet = google.sheets({ version: "v4", auth: client });
+  try{
 
-  const response = await sheet.spreadsheets.values.get({
-    spreadsheetId: SPREADSHEET_ID,
-    range: "Colleges!A2:C",
-  });
-
-  return response.data.values.map(([name, priceDual, priceSingle]) => ({
-    name,
-    priceDual: parseInt(priceDual) || 499,
-    priceSingle: parseInt(priceSingle) || 299,
-  }));
+    const client = await getAuthClient();
+    const sheet = google.sheets({ version: "v4", auth: client });
+  
+    const response = await sheet.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: "Colleges!A2:C",
+    });
+  
+    return response.data.values.map(([name, priceDual, priceSingle]) => ({
+      name,
+      priceDual: parseInt(priceDual) || 499,
+      priceSingle: parseInt(priceSingle) || 299,
+    }));
+  } catch (error) {
+    console.error("Error fetching colleges:", error);
+  }
 }
 
 async function getCourses() {
