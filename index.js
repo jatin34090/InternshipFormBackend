@@ -79,14 +79,14 @@ app.get("/api/courses", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-app.get("/api/interest-areas", async (req, res) => {
-  try {
-    const courses = await interestAreas();
-    res.json(courses);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+// app.get("/api/interest-areas", async (req, res) => {
+//   try {
+//     const courses = await interestAreas();
+//     res.json(courses);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 app.get("/api/references", async (req, res) => {
   try {
     const courses = await references();
