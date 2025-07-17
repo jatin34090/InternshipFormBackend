@@ -260,6 +260,13 @@ async function getColleges() {
       range: "Colleges!A2:C",
     });
 
+    const rows = response.data.values;
+
+    if (!rows || rows.length === 0) {
+      console.log("No data found.");
+      return [];
+    }
+
 
     return response?.data?.values?.map(([name, priceDual, priceSingle]) => ({
       name,
@@ -283,6 +290,8 @@ async function getCourses() {
     spreadsheetId: SPREADSHEET_ID,
     range: "Courses!A1:A",
   });
+
+  console.log("response", response.data.values);
 
   return response?.data?.values?.map(([course]) => course);
 }
