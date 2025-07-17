@@ -260,7 +260,6 @@ async function getColleges() {
       range: "Colleges!A2:C",
     });
 
-    console.log("response", response.data.values);
 
     return response?.data?.values?.map(([name, priceDual, priceSingle]) => ({
       name,
