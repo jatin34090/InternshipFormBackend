@@ -284,7 +284,7 @@ async function getCourses() {
     range: "Courses!A1:A",
   });
 
-  return response.data.values.map(([course]) => course);
+  return response?.data?.values?.map(([course]) => course);
 }
 async function interestAreas() {
   const client = await getAuthClient();
@@ -295,7 +295,7 @@ async function interestAreas() {
     range: "Area Of Interest!A1:A",
   });
 
-  return response.data.values.map(([interest]) => interest);
+  return response?.data?.values?.map(([interest]) => interest);
 }
 async function references() {
   const client = await getAuthClient();
@@ -306,7 +306,7 @@ async function references() {
     range: "References!A1:A",
   });
 
-  return response.data.values.map(([reference]) => reference);
+  return response?.data?.values?.map(([reference]) => reference);
 }
 
 
@@ -322,7 +322,7 @@ async function commenceInternship() {
   });
 
 
-  return response.data.values.map(([commenceInternship]) => commenceInternship);
+  return response?.data?.values?.map(([commenceInternship]) => commenceInternship);
 }
 
 module.exports = {
