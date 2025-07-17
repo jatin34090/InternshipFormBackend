@@ -262,7 +262,7 @@ async function getColleges() {
 
     console.log("response", response.data.values);
 
-    return response.data.values.map(([name, priceDual, priceSingle]) => ({
+    return response?.data?.values?.map(([name, priceDual, priceSingle]) => ({
       name,
       priceDual:
         priceDual !== "" && priceDual !== undefined ? parseInt(priceDual) : 499,
@@ -282,7 +282,7 @@ async function getCourses() {
 
   const response = await sheet.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
-    range: "Courses!A2:A",
+    range: "Courses!A1:A",
   });
 
   return response.data.values.map(([course]) => course);
@@ -293,7 +293,7 @@ async function interestAreas() {
 
   const response = await sheet.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
-    range: "Area Of Interest!A2:A",
+    range: "Area Of Interest!A1:A",
   });
 
   return response.data.values.map(([interest]) => interest);
@@ -304,10 +304,26 @@ async function references() {
 
   const response = await sheet.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
-    range: "References!A2:A",
+    range: "References!A1:A",
   });
 
   return response.data.values.map(([reference]) => reference);
+}
+
+
+
+
+async function commenceInternship() {
+  const client = await getAuthClient();
+  const sheet = google.sheets({ version: "v4", auth: client });
+
+  const response = await sheet.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: "CommenceInternship!A1:A",
+  });
+
+
+  return response.data.values.map(([commenceInternship]) => commenceInternship);
 }
 
 module.exports = {
@@ -316,4 +332,5 @@ module.exports = {
   getCourses,
   interestAreas,
   references,
+  commenceInternship
 };

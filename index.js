@@ -19,6 +19,7 @@ const {
   getCourses,
   interestAreas,
   references,
+  commenceInternship,
 } = require("./googleSheetService");
 const paymentRoutes = require('./routes/payment');
 
@@ -90,6 +91,14 @@ app.get("/api/courses", async (req, res) => {
 app.get("/api/references", async (req, res) => {
   try {
     const courses = await references();
+    res.json(courses);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get("/api/commenceInternship", async (req, res) => {
+  try {
+    const courses = await commenceInternship();
     res.json(courses);
   } catch (err) {
     res.status(500).json({ error: err.message });
